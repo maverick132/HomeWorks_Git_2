@@ -149,6 +149,7 @@ public class MyHashTable<K, V> {
      * @param key ключ элемента
      * @return результат удаления элемента
      */
+
     public boolean remove(K key){
         int index = calculateBucketIndex(key);
         Bucket bucket = buckets[index];
