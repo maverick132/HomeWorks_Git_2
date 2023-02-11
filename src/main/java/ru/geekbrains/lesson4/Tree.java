@@ -4,8 +4,17 @@ import java.util.List;
 
 public class Tree {
 
-    Node root;
+    private Node root;
+    private class Node {
+        private int value;
+        private List<Node> children;
+    }
 
+    /**
+     *
+     * @param value Искомое значение
+     * @return Результат поиска элемента
+     */
     public boolean exist(int value) {
         if (root != null) {
             Node node = find(root, value);
@@ -28,10 +37,5 @@ public class Tree {
             }
         }
         return null;
-    }
-
-    public class Node {
-        int value;
-        List<Node> children;
     }
 }
