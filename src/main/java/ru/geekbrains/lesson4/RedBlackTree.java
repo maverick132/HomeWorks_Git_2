@@ -3,8 +3,18 @@ package ru.geekbrains.lesson4;
 public class RedBlackTree extends BinaryTree {
     private Node root;
 
-    {
-        root.isBlack = true;
+//    public RedBlackTree(){
+//        root.isBlack = true;
+//
+//    }
+
+    /**
+     * @param root Вершина дерева.
+     */
+    public RedBlackTree(int root) {
+        this.root = new Node();
+        this.root.value = root;
+        this.root.isBlack = true;
     }
 
     /**
@@ -40,47 +50,30 @@ public class RedBlackTree extends BinaryTree {
         }
     }
 
+
     public boolean add(int value) {
-        if (root == null) {
-            root.value = value;
-            return true;
-        } else {
-            Node node = root;
-            boolean flag = false;
-            while (!flag) {
-                if (node.value > value) {
-                    node = node.leftChild;
-                    if (node == null) {
-                        node.leftChild = new Node(value);
-                        flag = true;
-                    }
-                } else {
-                    node = node.rightChild;
-                    if (node == null) {
-                        node = new Node(value);
-                        flag = true;
-                    }
-                }
-            }
-            node.isBlack = false;
-
+        if (exist(value)) return false;
+        else {
+            return findNode(root, value) != null;
         }
-
-        return false;
     }
 
     private Node findNode(Node node, int value) {
         if (node.value > value) {
             if (node.leftChild != null)
-                return find(node.leftChild, value);
+                return findNode(node.leftChild, value);
             else {
-                node.leftChild = new Node(value);
+                node.leftChild = new Node();
+                node.leftChild.value = value;
+                node.leftChild.isBlack = false;
                 return node.leftChild;
             }
         } else if (node.rightChild != null)
-            return find(node.rightChild, value);
+            return findNode(node.rightChild, value);
         else {
-            node.rightChild = new Node(value);
+            node.rightChild = new Node();
+            node.rightChild.value = value;
+            node.rightChild.isBlack = false;
             return node.rightChild;
 
         }
@@ -93,13 +86,39 @@ public class RedBlackTree extends BinaryTree {
         private Node rightChild;
         private boolean isBlack;
 
-        public Node() {
-            this(0);
+        public int getValue() {
+            return value;
         }
 
-        public Node(int value) {
+        public void setValue(int value) {
             this.value = value;
         }
+
+        public Node getLeftChild() {
+            return leftChild;
+        }
+
+        public void setLeftChild(Node leftChild) {
+            this.leftChild = leftChild;
+        }
+
+        public Node getRightChild() {
+            return rightChild;
+        }
+
+        public void setRightChild(Node rightChild) {
+            this.rightChild = rightChild;
+        }
+
+        public boolean isBlack() {
+            return isBlack;
+        }
+
+        public void setBlack(boolean black) {
+            isBlack = black;
+        }
+
+
     }
 
 
