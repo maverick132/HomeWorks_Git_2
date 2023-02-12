@@ -16,6 +16,11 @@ public class Sample01 {
         redBlackTree.add(4);
         redBlackTree.add(5);
         redBlackTree.add(6);
+        redBlackTree.add(7);
+        redBlackTree.add(8);
+        redBlackTree.add(9);
+        redBlackTree.add(10);
+        redBlackTree.add(11);
 
 //        redBlackTree.add(6);
 //        redBlackTree.add(5);
