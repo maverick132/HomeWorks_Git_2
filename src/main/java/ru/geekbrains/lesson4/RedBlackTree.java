@@ -100,7 +100,7 @@ public class RedBlackTree extends BinaryTree {
             changeColor(oldParent);
             balanceTree(oldParent);
         } else if (parent == oldParent.leftChild) {
-            if (node == parent.rightChild) {
+            if (node != parent.leftChild) {
                 leftTurn(parent);
                 parent = node;
             }
