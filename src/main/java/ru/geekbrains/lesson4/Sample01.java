@@ -9,7 +9,6 @@ public class Sample01 {
     public static void main(String[] args) {
         RedBlackTree redBlackTree = new RedBlackTree();
 
-        System.out.println();
         redBlackTree.add(1);
         redBlackTree.add(2);
         redBlackTree.add(3);
@@ -22,9 +21,6 @@ public class Sample01 {
         redBlackTree.add(10);
         redBlackTree.add(11);
 
-//        redBlackTree.add(6);
-//        redBlackTree.add(5);
-//        redBlackTree.add(1);
 
 
     }
