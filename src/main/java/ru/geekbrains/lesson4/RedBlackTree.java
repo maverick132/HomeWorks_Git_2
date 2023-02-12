@@ -3,20 +3,6 @@ package ru.geekbrains.lesson4;
 public class RedBlackTree extends BinaryTree {
     private Node root;
 
-//    public RedBlackTree(){
-//        root.isBlack = true;
-//
-//    }
-
-    /**
-     * @param root Вершина дерева.
-     */
-    public RedBlackTree(int root) {
-        this.root = new Node();
-        this.root.value = root;
-        this.root.isBlack = true;
-    }
-
     /**
      * @param value Искомое значение
      * @return Результат поиска элемента
@@ -58,29 +44,6 @@ public class RedBlackTree extends BinaryTree {
         }
     }
 
-    public void test() {
-        root.leftChild = new Node();
-        root.rightChild = new Node();
-        root.leftChild.leftChild = new Node();
-        root.leftChild.rightChild = new Node();
-
-        root.rightChild.value = 6;
-        root.rightChild.isBlack = true;
-        root.leftChild.value = 3;
-        root.leftChild.isBlack = false;
-        root.leftChild.leftChild.value = 2;
-        root.leftChild.leftChild.isBlack = true;
-        root.leftChild.rightChild.isBlack = true;
-        root.leftChild.rightChild.value = 4;
-    }
-
-    public void test2() {
-        leftTurn(root.leftChild, root);
-    }
-    public void test3() {
-        rightTurn(root, root.rightChild);
-    }
-
     private Node findNode(Node node, int value) {
         if (node.value > value) {
             if (node.leftChild != null)
@@ -106,27 +69,53 @@ public class RedBlackTree extends BinaryTree {
      * @param X Дите, которое должно стать родителем
      * @param Y Родитель, который должен стать дитем
      */
-    public void leftTurn(Node X, Node Y) {
-        Node temp = new Node();
-        temp.copyNode(Y);
+    public void leftTurn(Node node) {
+        Node parent = node.parent;
+        Node rightChild = node.rightChild;
 
-        Y.copyNode(X);
-        Y.isBlack = true;
-        X.copyNode(temp);
-        X.isBlack = false;
-        X.leftChild = Y.rightChild;
-        Y.rightChild = X;
+        node.rightChild = rightChild.leftChild;
+        if(rightChild.leftChild !=null){
+            rightChild.leftChild.parent = node;
+        }
+
+        rightChild.leftChild = node;
+        node.parent = rightChild;
+
+        if (parent == null) {
+            root = rightChild;
+        } else if (parent.leftChild == node) {
+            parent.leftChild = rightChild;
+        } else if (parent.rightChild == node) {
+            parent.rightChild = rightChild;
+        }
+
+        if (rightChild != null) {
+            rightChild.parent = parent;
+        }
     }
-    public void rightTurn(Node X, Node Y) {
-        Node temp = new Node();
-        temp.copyNode(X);
+    public void rightTurn(Node node) {
+        Node parent = node.parent;
+        Node leftChild = node.leftChild;
 
-        X.copyNode(Y);
-        X.isBlack = true;
-        Y.copyNode(temp);
-        Y.isBlack = false;
-        Y.rightChild = X.leftChild;
-        X.leftChild = Y;
+        node.leftChild = leftChild.rightChild;
+        if(leftChild.rightChild !=null){
+            leftChild.rightChild.parent = node;
+        }
+
+        leftChild.rightChild = node;
+        node.parent = leftChild;
+
+        if (parent == null) {
+            root = leftChild;
+        } else if (parent.leftChild == node) {
+            parent.leftChild = leftChild;
+        } else if (parent.rightChild == node) {
+            parent.rightChild = leftChild;
+        }
+
+        if (leftChild != null) {
+            leftChild.parent = parent;
+        }
     }
     public void changeColor(Node X) {
         if (X.isBlack){
@@ -141,6 +130,7 @@ public class RedBlackTree extends BinaryTree {
         private int value;
         private Node leftChild;
         private Node rightChild;
+        private Node parent;
         private boolean isBlack;
         {
             isBlack = false;
@@ -150,6 +140,7 @@ public class RedBlackTree extends BinaryTree {
             this.isBlack = Y.isBlack;
             if (Y.leftChild != null) this.leftChild = Y.leftChild;
             this.value = Y.value;
+            if (Y.parent != null) this.parent = Y.parent;
 
         }
 
