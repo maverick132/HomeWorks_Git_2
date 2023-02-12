@@ -11,6 +11,7 @@ public class Sample01 {
             redBlackTree.test();
         System.out.println();
         redBlackTree.test2();
+        redBlackTree.test3();
 //        redBlackTree.add(6);
 //        redBlackTree.add(5);
 //        redBlackTree.add(1);

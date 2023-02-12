@@ -77,6 +77,9 @@ public class RedBlackTree extends BinaryTree {
     public void test2() {
         leftTurn(root.leftChild, root);
     }
+    public void test3() {
+        rightTurn(root, root.rightChild);
+    }
 
     private Node findNode(Node node, int value) {
         if (node.value > value) {
@@ -113,6 +116,24 @@ public class RedBlackTree extends BinaryTree {
         X.isBlack = false;
         X.leftChild = Y.rightChild;
         Y.rightChild = X;
+    }
+    public void rightTurn(Node X, Node Y) {
+        Node temp = new Node();
+        temp.copyNode(X);
+
+        X.copyNode(Y);
+        X.isBlack = true;
+        Y.copyNode(temp);
+        Y.isBlack = false;
+        Y.rightChild = X.leftChild;
+        X.leftChild = Y;
+    }
+    public void changeColor(Node X) {
+        if (X.isBlack){
+            X.isBlack = false;
+            X.leftChild.isBlack = true;
+            X.rightChild.isBlack = true;
+        }
     }
 
 
