@@ -40,41 +40,93 @@ public class RedBlackTree extends BinaryTree {
     public boolean add(int value) {
         if (exist(value)) return false;
         else {
-            return findNode(root, value) != null;
+            findNode(value);
+            return true;
         }
     }
 
-    private Node findNode(Node node, int value) {
-        if (node.value > value) {
-            if (node.leftChild != null)
-                return findNode(node.leftChild, value);
-            else {
-                node.leftChild = new Node();
-                node.leftChild.value = value;
-                node.leftChild.isBlack = false;
-                return node.leftChild;
+    private void findNode(int value) {
+        Node node = root;
+        Node parent = null;
+
+        while (node != null) {
+            parent = node;
+            if (value < node.value) {
+                node = node.leftChild;
+            } else {
+                node = node.rightChild;
             }
-        } else if (node.rightChild != null)
-            return findNode(node.rightChild, value);
-        else {
-            node.rightChild = new Node();
-            node.rightChild.value = value;
-            node.rightChild.isBlack = false;
-            return node.rightChild;
-
         }
+
+        Node addNode = new Node(value);
+        if (parent == null) {
+            root = addNode;
+        } else if (value < parent.value) {
+            parent.leftChild = addNode;
+        } else {
+            parent.rightChild = addNode;
+        }
+        addNode.parent = parent;
+        balanceTree(addNode);
     }
 
-    /**
-     * @param X Дите, которое должно стать родителем
-     * @param Y Родитель, который должен стать дитем
-     */
+    public void balanceTree(Node node) {
+        Node parent = node.parent;
+
+        if (parent == null) {
+            node.isBlack = true;
+            return;
+        }
+        if (parent.isBlack) {
+            return;
+        }
+        Node temp = parent.parent;
+        Node temp2;
+
+        if (temp == null) {
+            parent.isBlack = true;
+            return;
+        }
+
+        if (temp.leftChild == parent) {
+            temp2 = temp.rightChild;
+
+        } else {
+            temp2 = temp.leftChild;
+        }
+
+        if (temp2 != null && !temp2.isBlack) {
+            changeColor(parent.parent);
+            balanceTree(parent.parent);
+        } else if (parent == parent.parent.leftChild) {
+            if (node == parent.rightChild) {
+                leftTurn(parent);
+                parent = node;
+            }
+            rightTurn(temp);
+            parent.isBlack = true;
+            temp.isBlack = false;
+        }
+        else {
+            if (node == parent.leftChild) {
+                rightTurn(parent);
+                parent= node;
+            }
+            leftTurn(temp);
+            parent.isBlack = true;
+            temp.isBlack = false;
+        }
+
+
+    }
+
+
     public void leftTurn(Node node) {
         Node parent = node.parent;
         Node rightChild = node.rightChild;
 
         node.rightChild = rightChild.leftChild;
-        if(rightChild.leftChild !=null){
+        if (rightChild.leftChild != null) {
             rightChild.leftChild.parent = node;
         }
 
@@ -93,12 +145,13 @@ public class RedBlackTree extends BinaryTree {
             rightChild.parent = parent;
         }
     }
+
     public void rightTurn(Node node) {
         Node parent = node.parent;
         Node leftChild = node.leftChild;
 
         node.leftChild = leftChild.rightChild;
-        if(leftChild.rightChild !=null){
+        if (leftChild.rightChild != null) {
             leftChild.rightChild.parent = node;
         }
 
@@ -117,8 +170,9 @@ public class RedBlackTree extends BinaryTree {
             leftChild.parent = parent;
         }
     }
+
     public void changeColor(Node X) {
-        if (X.isBlack){
+        if (X.isBlack) {
             X.isBlack = false;
             X.leftChild.isBlack = true;
             X.rightChild.isBlack = true;
@@ -132,9 +186,13 @@ public class RedBlackTree extends BinaryTree {
         private Node rightChild;
         private Node parent;
         private boolean isBlack;
-        {
-            isBlack = false;
+
+
+        public Node(int value) {
+            this.value = value;
+            this.isBlack = false;
         }
+
         public void copyNode(Node Y) {
             if (Y.rightChild != null) this.rightChild = Y.rightChild;
             this.isBlack = Y.isBlack;
