@@ -70,7 +70,7 @@ public class RedBlackTree extends BinaryTree {
         balanceTree(addNode);
     }
 
-    public void balanceTree(Node node) {
+    private void balanceTree(Node node) {
         Node parent = node.parent;
 
         if (parent == null) {
@@ -80,48 +80,48 @@ public class RedBlackTree extends BinaryTree {
         if (parent.isBlack) {
             return;
         }
-        Node temp = parent.parent;
-        Node temp2;
 
-        if (temp == null) {
+        Node oldParent = parent.parent;
+        Node neighbourNode;
+
+        if (oldParent == null) {
             parent.isBlack = true;
             return;
         }
 
-        if (temp.leftChild == parent) {
-            temp2 = temp.rightChild;
+        if (oldParent.leftChild == parent) {
+            neighbourNode = oldParent.rightChild;
 
         } else {
-            temp2 = temp.leftChild;
+            neighbourNode = oldParent.leftChild;
         }
 
-        if (temp2 != null && !temp2.isBlack) {
-            changeColor(parent.parent);
-            balanceTree(parent.parent);
-        } else if (parent == parent.parent.leftChild) {
-            if (node == parent.rightChild) {
+        if (neighbourNode != null && !neighbourNode.isBlack) {
+            changeColor(oldParent);
+            balanceTree(oldParent);
+        } else if (parent == oldParent.leftChild) {
+            if (node != parent.leftChild) {
                 leftTurn(parent);
                 parent = node;
             }
-            rightTurn(temp);
+            rightTurn(oldParent);
             parent.isBlack = true;
-            temp.isBlack = false;
-        }
-        else {
+            oldParent.isBlack = false;
+        } else {
             if (node == parent.leftChild) {
                 rightTurn(parent);
-                parent= node;
+                parent = node;
             }
-            leftTurn(temp);
+            leftTurn(oldParent);
             parent.isBlack = true;
-            temp.isBlack = false;
+            oldParent.isBlack = false;
         }
 
 
     }
 
 
-    public void leftTurn(Node node) {
+    private void leftTurn(Node node) {
         Node parent = node.parent;
         Node rightChild = node.rightChild;
 
@@ -146,7 +146,7 @@ public class RedBlackTree extends BinaryTree {
         }
     }
 
-    public void rightTurn(Node node) {
+    private void rightTurn(Node node) {
         Node parent = node.parent;
         Node leftChild = node.leftChild;
 
@@ -171,7 +171,7 @@ public class RedBlackTree extends BinaryTree {
         }
     }
 
-    public void changeColor(Node X) {
+    private void changeColor(Node X) {
         if (X.isBlack) {
             X.isBlack = false;
             X.leftChild.isBlack = true;
@@ -188,7 +188,7 @@ public class RedBlackTree extends BinaryTree {
         private boolean isBlack;
 
 
-        public Node(int value) {
+        protected Node(int value) {
             this.value = value;
             this.isBlack = false;
         }
